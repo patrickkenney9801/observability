@@ -1,0 +1,27 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: elasticsearch
+  namespace: elasticsearch
+spec:
+  releaseName: elasticsearch
+  chart:
+    spec:
+      chart: elasticsearch
+      sourceRef:
+        kind: HelmRepository
+        name: elastic
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+  values:
+    antiAffinity: soft
+    enableServiceLinks: false
+    secret:
+      password: "elastic"
+    volumeClaimTemplate:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
