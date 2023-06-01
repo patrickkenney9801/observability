@@ -24,3 +24,10 @@ stop-minikube:
 
 delete-minikube:
 	@minikube -p ${PROFILE} delete
+
+hooks:
+	@pre-commit install --hook-type pre-commit
+	@pre-commit install-hooks
+
+pre-commit:
+	@pre-commit run -a
