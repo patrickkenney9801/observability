@@ -1,0 +1,26 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: sonarqube
+  namespace: sonarqube
+spec:
+  releaseName: sonarqube
+  chart:
+    spec:
+      chart: sonarqube
+      sourceRef:
+        kind: HelmRepository
+        name: sonarqube
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+  values:
+    account:
+      currentAdminPassword: admin
+      adminPassword: hi
+    persistence:
+      enabled: true
+    service:
+      type: NodePort
