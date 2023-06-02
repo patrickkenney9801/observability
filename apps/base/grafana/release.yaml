@@ -79,7 +79,7 @@ spec:
           gnetId: 14765
           revision: 3
           datasource: prometheus
-        host-dashboard:
+        node-exporter-dashboard:
           gnetId: 1860
           revision: 31
           datasource: prometheus
