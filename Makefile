@@ -2,6 +2,12 @@ SHELL := /bin/bash
 
 PROFILE := observability
 
+apply:
+	@cd flux;\
+	terraform init;\
+	terraform plan;\
+	terraform apply;\
+
 dependencies: dependencies-asdf
 
 dependencies-asdf:
