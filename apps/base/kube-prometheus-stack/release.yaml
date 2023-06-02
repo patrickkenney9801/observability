@@ -46,7 +46,9 @@ spec:
         monitor:
           enabled: false
     nodeExporter:
-      enabled: false
+      enabled: true
+      extraArgs:
+        - --collector.cgroups
     prometheus-node-exporter:
       prometheus:
         monitor:
