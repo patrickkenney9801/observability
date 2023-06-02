@@ -79,8 +79,8 @@ spec:
           gnetId: 14765
           revision: 3
           datasource: prometheus
-        host-dashboard:
-          gnetId: 10506
+        docker-dashboard:
+          gnetId: 395
           revision: 1
           datasource: prometheus
     service:
