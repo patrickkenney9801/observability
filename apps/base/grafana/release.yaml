@@ -79,9 +79,9 @@ spec:
           gnetId: 14765
           revision: 3
           datasource: prometheus
-        docker-dashboard:
-          gnetId: 395
-          revision: 1
+        host-dashboard:
+          gnetId: 1860
+          revision: 31
           datasource: prometheus
     service:
       type: NodePort
