@@ -60,11 +60,12 @@ spec:
             type: loki
             uid: loki
             access: proxy
-            url: "http://loki.loki:3100"
+            url: "http://loki-gateway.loki:80"
             basicAuth: true
             basicAuthUser: "loki"
             jsonData:
               maxLines: 1000
+              httpHeaderName1: "X-Scope-OrgID"
               derivedFields:
                 - datasourceUid: tempo
                   matcherRegex: "traceID=(\\w+)"
@@ -76,6 +77,7 @@ spec:
                   url: 'http://localhost:16686/trace/$${__value.raw}'
             secureJsonData:
               basicAuthPassword: "loki"
+              httpHeaderValue1: "grafana"
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1

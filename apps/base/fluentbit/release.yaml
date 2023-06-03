@@ -113,7 +113,7 @@ spec:
             match kube.*
             host loki-gateway.loki
             port 80
-            tenant_id ""
+            tenant_id grafana
             auto_kubernetes_labels on
             http_user loki
             http_passwd loki
