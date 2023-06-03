@@ -6,6 +6,7 @@ resources:
   - ../base/fluentbit
   - ../base/grafana
   - ../base/kube-prometheus-stack
+  - ../base/loki
   - ../base/sonarqube
   - ../base/tempo
 patches:

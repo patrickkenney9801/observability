@@ -56,6 +56,26 @@ spec:
               exemplarTraceIdDestinations:
                 - datasourceUid: tempo
                   name: traceID
+          - name: loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: "http://loki.loki:3100"
+            basicAuth: true
+            basicAuthUser: "loki"
+            jsonData:
+              maxLines: 1000
+              derivedFields:
+                - datasourceUid: tempo
+                  matcherRegex: "traceID=(\\w+)"
+                  name: TraceID
+                  # url will be interpreted as query for the datasource
+                  url: '$${__value.raw}'
+                - matcherRegex: "traceID=(\\w+)"
+                  name: TraceID
+                  url: 'http://localhost:16686/trace/$${__value.raw}'
+            secureJsonData:
+              basicAuthPassword: "loki"
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -83,6 +103,10 @@ spec:
           gnetId: 1860
           revision: 31
           datasource: prometheus
+        loki-logs-dashboard:
+          gnetId: 13639
+          revision: 2
+          datasource: loki
     service:
       type: NodePort
     persistence:
