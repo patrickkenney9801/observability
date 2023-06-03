@@ -18,9 +18,9 @@ spec:
       retries: 3
   values:
     securityContext:
-    capabilities:
-      drop:
-        - ALL
+      capabilities:
+        drop:
+          - ALL
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
     runAsNonRoot: false
@@ -108,3 +108,15 @@ spec:
             HTTP_User elastic
             HTTP_Passwd elastic
             Suppress_Type_Name On
+        [OUTPUT]
+            name loki
+            match kube.*
+            host loki-gateway.loki
+            port 80
+            tenant_id ""
+            auto_kubernetes_labels on
+            http_user loki
+            http_passwd loki
+            line_format json
+            tls.verify off
+            tls off

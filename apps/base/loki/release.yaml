@@ -1,0 +1,48 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: loki
+spec:
+  releaseName: loki
+  chart:
+    spec:
+      chart: loki
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+  values:
+    gateway:
+      basicAuth:
+        enabled: true
+        username: "loki"
+        password: "loki"
+    write:
+      affinity: |
+
+    read:
+      affinity: |
+
+    backend:
+      affinity: |
+
+    test:
+      enabled: false
+    monitoring:
+      dashboards:
+        enabled: false
+      rules:
+        enabled: false
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+      lokiCanary:
+        enabled: false
+    minio:
+      enabled: true
