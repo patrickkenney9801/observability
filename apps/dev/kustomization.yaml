@@ -3,12 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../base/elasticsearch
-  - ../base/fluentbit
-  - ../base/grafana
-  - ../base/kube-prometheus-stack
   - ../base/loki
-  - ../base/sonarqube
+  - ../base/fluentbit
+  - ../base/kube-prometheus-stack
   - ../base/tempo
+  - ../base/grafana
+  - ../base/sonarqube
 patches:
   - path: elasticsearch-values.yaml
     target:
