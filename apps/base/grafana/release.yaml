@@ -105,10 +105,6 @@ spec:
           gnetId: 1860
           revision: 31
           datasource: prometheus
-        loki-logs-dashboard:
-          gnetId: 13639
-          revision: 2
-          datasource: loki
     service:
       type: NodePort
     persistence:
