@@ -12,6 +12,8 @@ patches:
   - path: elasticsearch-values.yaml
     target:
       kind: HelmRelease
+      name: elasticsearch
   - path: fluentbit-values.yaml
     target:
       kind: HelmRelease
+      name: fluent-bit
