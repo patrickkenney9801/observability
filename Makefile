@@ -2,6 +2,18 @@ SHELL := /bin/bash
 
 PROFILE := observability
 
+define node_ip
+$(shell kubectl --context ${PROFILE} get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+endef
+
+define grafana_port
+$(shell kubectl --context ${PROFILE} get --namespace grafana -o jsonpath="{.spec.ports[0].nodePort}" services grafana)
+endef
+
+define sonarqube_port
+$(shell kubectl --context ${PROFILE} get --namespace sonarqube -o jsonpath="{.spec.ports[0].nodePort}" services sonarqube-sonarqube)
+endef
+
 apply:
 	@cd flux;\
 	terraform init;\
@@ -23,13 +35,23 @@ dependencies-asdf:
 	@echo "Done!"
 
 start-minikube:
-	@minikube -p ${PROFILE} start
+	@minikube -p ${PROFILE} start \
+	--extra-config=kubelet.cpu-manager-policy=static \
+	--extra-config=kubelet.reserved-cpus=1
 
 stop-minikube:
 	@minikube -p ${PROFILE} stop
 
 delete-minikube:
 	@minikube -p ${PROFILE} delete
+
+grafana:
+	@echo http://$(call node_ip):$(call grafana_port)
+	@python -mwebbrowser http://$(call node_ip):$(call grafana_port)
+
+sonarqube:
+	@echo http://$(call node_ip):$(call sonarqube_port)
+	@python -mwebbrowser http://$(call node_ip):$(call sonarqube_port)
 
 hooks:
 	@pre-commit install --hook-type pre-commit

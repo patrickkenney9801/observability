@@ -9,6 +9,7 @@ spec:
   chart:
     spec:
       chart: sonarqube
+      version: '8.0.1'
       sourceRef:
         kind: HelmRepository
         name: sonarqube
@@ -22,5 +23,8 @@ spec:
       adminPassword: hi
     persistence:
       enabled: true
+    plugins:
+      install:
+        - "https://github.com/SonarOpenCommunity/sonar-cxx/releases/download/cxx-2.1.1/sonar-cxx-plugin-2.1.1.488.jar"
     service:
       type: NodePort
