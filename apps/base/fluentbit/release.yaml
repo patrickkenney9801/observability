@@ -26,6 +26,13 @@ spec:
     runAsNonRoot: false
     seccompProfile:
       type: RuntimeDefault
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
     luaScripts:
       cleanupLog.lua: |
