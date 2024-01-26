@@ -1,13 +1,14 @@
 SHELL := /bin/bash
 
 PROFILE := observability
-
-define node_ip
-$(shell kubectl --context ${PROFILE} get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
-endef
+MINIKUBE_IP := 192.168.49.2
 
 define grafana_port
 $(shell kubectl --context ${PROFILE} get --namespace grafana -o jsonpath="{.spec.ports[0].nodePort}" services grafana)
+endef
+
+define harbor_port
+$(shell kubectl --context ${PROFILE} get --namespace harbor -o jsonpath="{.spec.ports[0].nodePort}" services harbor)
 endef
 
 define sonarqube_port
@@ -36,8 +37,10 @@ dependencies-asdf:
 
 start-minikube:
 	@minikube -p ${PROFILE} start \
+	--static-ip ${MINIKUBE_IP} \
 	--extra-config=kubelet.cpu-manager-policy=static \
-	--extra-config=kubelet.reserved-cpus=1
+	--extra-config=kubelet.reserved-cpus=1 \
+	--addons=ingress,ingress-dns
 
 stop-minikube:
 	@minikube -p ${PROFILE} stop
@@ -45,13 +48,26 @@ stop-minikube:
 delete-minikube:
 	@minikube -p ${PROFILE} delete
 
+services: grafana harbor sonarqube
+
+services-remote:
+	@echo ssh -L 9801:${MINIKUBE_IP}:$(call sonarqube_port) \
+	 -L 9802:${MINIKUBE_IP}:$(call grafana_port) \
+	 -L 9803:${MINIKUBE_IP}:$(call harbor_port) \
+	 $(shell hostname)
+
 grafana:
-	@echo http://$(call node_ip):$(call grafana_port)
-	@python -mwebbrowser http://$(call node_ip):$(call grafana_port)
+	@echo http://${MINIKUBE_IP}:$(call grafana_port)
+	@python -mwebbrowser http://${MINIKUBE_IP}:$(call grafana_port)
+
+harbor:
+	@echo "Harbor requires the following setup: https://minikube.sigs.k8s.io/docs/handbook/addons/ingress-dns/"
+	@echo http://core.harbor.domain
+	@python -mwebbrowser http://core.harbor.domain
 
 sonarqube:
-	@echo http://$(call node_ip):$(call sonarqube_port)
-	@python -mwebbrowser http://$(call node_ip):$(call sonarqube_port)
+	@echo http://${MINIKUBE_IP}:$(call sonarqube_port)
+	@python -mwebbrowser http://${MINIKUBE_IP}:$(call sonarqube_port)
 
 hooks:
 	@pre-commit install --hook-type pre-commit

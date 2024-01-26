@@ -1,0 +1,109 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: harbor
+  namespace: harbor
+spec:
+  releaseName: harbor
+  chart:
+    spec:
+      chart: harbor
+      sourceRef:
+        kind: HelmRepository
+        name: harbor
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+  values:
+    expose:
+      type: ingress
+      tls:
+        enabled: false
+    harborAdminPassword: "admin"
+    persistence:
+      enabled: true
+      persistentVolumeClaim:
+        size: 15Gi
+    portal:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+    core:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+    jobservice:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+    registry:
+      credentials:
+        username: "admin"
+        password: "admin"
+      registry:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi
+      controller:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi
+    trivy:
+      enabled: true
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+    database:
+      type: internal
+      internal:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi
+    redis:
+      type: internal
+      internal:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi
+    exporter:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi

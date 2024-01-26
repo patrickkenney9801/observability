@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../base/elasticsearch
   - ../base/fluentbit
+  - ../base/harbor
   - ../base/kube-prometheus-stack
   - ../base/tempo
   - ../base/grafana
