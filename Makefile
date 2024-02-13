@@ -48,12 +48,12 @@ stop-minikube:
 delete-minikube:
 	@minikube -p ${PROFILE} delete
 
-services: grafana harbor sonarqube
+services: grafana sonarqube
 
 services-remote:
 	@echo ssh -L 9801:${MINIKUBE_IP}:$(call sonarqube_port) \
 	 -L 9802:${MINIKUBE_IP}:$(call grafana_port) \
-	 -L 9803:${MINIKUBE_IP}:$(call harbor_port) \
+	 -L 9803:http://core.harbor.domain \
 	 $(shell hostname)
 
 grafana:
